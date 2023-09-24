@@ -41,31 +41,31 @@ Before getting started, you'll need the following:
 
    This command will display the machine hardware name. If it shows aarch64, your Raspberry Pi is running a 64-bit operating system. If it shows armv7l or armv6l, your Raspberry Pi is running a 32-bit operating system.
 
-Instructions for install AWS CLI on a 32 bit OS can be found [here](https://docs.aws.amazon.com/cli/v1/userguide/install-linux.html).
+   Instructions for install AWS CLI on a 32 bit OS can be found [here](https://docs.aws.amazon.com/cli/v1/userguide/install-linux.html).
 
-### Configure AWS SNS
+   ### Configure AWS SNS
 
-Instructions on creating a Topic and publishing to that topic can be found [here](https://docs.aws.amazon.com/sns/latest/dg/sns-getting-started.html).
+   Instructions on creating a Topic and publishing to that topic can be found [here](https://docs.aws.amazon.com/sns/latest/dg/sns-getting-started.html).
 
-Please note that currently **ONLY** US East 1 (N. Virginia region)supports SMS messaging.Meaning you need to create your topic in the (N. Virginia region).However you can publish to the SNS service from anywhere (i.e servers in the Ohio Region or even in your private datacenter (Raspberry Pi) will still work.)
+   Please note that currently **ONLY** US East 1 (N. Virginia region)supports SMS messaging.Meaning you need to create your topic in the (N. Virginia region).However you can publish to the SNS service from anywhere (i.e servers in the Ohio Region or even in your private datacenter (Raspberry Pi) will still work.)
 
-Once you create the topic copy the Topic ARN,Topic Name and Display Name.They will be used later.
+   Once you create the topic copy the Topic ARN,Topic Name and Display Name.They will be used later.
 
-### Configuring API Keys
+   ### Configuring API Keys
 
-Go to IAM and create a user generating a new access key for the user as you do so. Copy the credentials you will need them for your script. Once you close this page you won’t be able to see them again.
+   Go to IAM and create a user generating a new access key for the user as you do so. Copy the credentials you will need them for your script. Once you close this page you won’t be able to see them again.
 
-Now click your user and expand the “Inline Policy” section. We are going to grant the user the ability to Publish events to the topic we created earlier.
+   Now click your user and expand the “Inline Policy” section. We are going to grant the user the ability to Publish events to the topic we created earlier.
 
-Choose “Policy Generator.”
+   Choose “Policy Generator.”
 
-Under AWS service choose Amazon SNS. Under “Actions” choose “List Topics.” For Amazon Resource Name enter “\*”. Click “Add Statement.”
+   Under AWS service choose Amazon SNS. Under “Actions” choose “List Topics.” For Amazon Resource Name enter “\*”. Click “Add Statement.”
 
-Under AWS service choose Amazon SNS. Under “Actions” choose “Publish.” Last, put the Topic ARN we copied earlier in the Amazon Resource Name box. Click “Add Statement.”
+   Under AWS service choose Amazon SNS. Under “Actions” choose “Publish.” Last, put the Topic ARN we copied earlier in the Amazon Resource Name box. Click “Add Statement.”
 
-Click “Next Step.”
+   Click “Next Step.”
 
-Apply your policy. Your user can now publish to the SNS topic.
+   Apply your policy. Your user can now publish to the SNS topic.
 
 ## Create a Bash Script:
 
