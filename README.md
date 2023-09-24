@@ -23,7 +23,10 @@ Before getting started, you'll need the following:
 1. Clone this repository to your Nagios server:
 
    git clone https://github.com/your-username/nagios-sns-monitoring.git
+
+   ```
    cd nagios-sns-monitoring
+   ```
 
 2. Configure Nagios host and service definitions in your Nagios configuration files (in this case pimylifeuphost.cfg located at /usr/local/nagios/etc/objects/pimylifeuphost.cfg ).
 
@@ -67,16 +70,16 @@ Before getting started, you'll need the following:
 
    Apply your policy. Your user can now publish to the SNS topic.
 
-## Create a Bash Script:
+4. Create a Bash Script:
 
-1. Open a text editor on your Nagios server, and create a Bash script. Let's call it notify-service-by-sns.sh. You can use the nano text editor or any other text editor you prefer:
+- Open a text editor on your Nagios server, and create a Bash script. Let's call it notify-service-by-sns.sh. You can use the nano text editor or any other text editor you prefer:
 
-```
-nano notify-service-by-sns.sh
-```
+  ```
+  nano notify-service-by-sns.sh
+  ```
 
-2. **Write the Bash Script**:
-   In the Bash script, you'll use the AWS CLI to publish messages to an SNS topic. Here's an example script:
+- **Write the Bash Script**:
+  In the Bash script, you'll use the AWS CLI to publish messages to an SNS topic. Here's an example script:
 
 ```
 #!/bin/bash
@@ -104,14 +107,14 @@ In this script:
 
 Replace "YOUR_SNS_TOPIC_ARN" with the actual ARN of your Amazon SNS topic. Replace "AWS ACCESS KEY ID" and "AWS_SECRET_ACCESS_KEY" with your access key and ID generated earlier.
 
-3. **Make the Script Executable**:
-   Make the script executable with the following command:
+- **Make the Script Executable**:
+  Make the script executable with the following command:
 
 ```
 chmod +x notify-service-by-sns.sh
 ```
 
-4. **Script Ownership**:
+- **Script Ownership**:
 
 Check the ownership of the script. The owner of the script should be the user under which the Nagios process runs. By default, Nagios typically runs as the nagios user.
 
@@ -119,7 +122,7 @@ Check the ownership of the script. The owner of the script should be the user un
 ls -l /path/to/notify-service-by-sns.sh
 ```
 
-5. **Nagios User and Group**:
+- **Nagios User and Group**:
 
 Identify the user and group under which the Nagios process runs. You can typically find this information in the Nagios configuration files (e.g., /usr/local/nagios/etc/nagios.cfg).
 
