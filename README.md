@@ -43,7 +43,7 @@ Before getting started, you'll need the following:
 
 Instructions for install AWS CLI on a 32 bit OS can be found [here](https://docs.aws.amazon.com/cli/v1/userguide/install-linux.html).
 
-## Configure AWS SNS
+### Configure AWS SNS
 
 Instructions on creating a Topic and publishing to that topic can be found [here](https://docs.aws.amazon.com/sns/latest/dg/sns-getting-started.html).
 
@@ -51,7 +51,7 @@ Please note that currently **ONLY** US East 1 (N. Virginia region)supports SMS m
 
 Once you create the topic copy the Topic ARN,Topic Name and Display Name.They will be used later.
 
-## Configuring API Keys
+### Configuring API Keys
 
 Go to IAM and create a user generating a new access key for the user as you do so. Copy the credentials you will need them for your script. Once you close this page you won’t be able to see them again.
 
