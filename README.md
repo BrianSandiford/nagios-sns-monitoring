@@ -81,107 +81,107 @@ Before getting started, you'll need the following:
 - **Write the Bash Script**:
   In the Bash script, you'll use the AWS CLI to publish messages to an SNS topic. Here's an example script:
 
-```
-#!/bin/bash
+  ```
+  #!/bin/bash
 
-# AWS SNS Topic ARN
-TOPIC_ARN="YOUR_SNS_TOPIC_ARN"
+  # AWS SNS Topic ARN
+  TOPIC_ARN="YOUR_SNS_TOPIC_ARN"
 
-# Set AWS credentials as environment variables
-export AWS_ACCESS_KEY_ID="AWS ACCESS KEY ID"
-export AWS_SECRET_ACCESS_KEY="AWS_SECRET_ACCESS_KEY"
-AWS_REGION="us-east-1"
+  # Set AWS credentials as environment variables
+  export AWS_ACCESS_KEY_ID="AWS ACCESS KEY ID"
+  export AWS_SECRET_ACCESS_KEY="AWS_SECRET_ACCESS_KEY"
+  AWS_REGION="us-east-1"
 
-# Nagios macros for service and message
-SERVICE="$1"
-HOST="$2"
-MESSAGE="$3"
+  # Nagios macros for service and message
+  SERVICE="$1"
+  HOST="$2"
+  MESSAGE="$3"
 
-# AWS CLI command to publish a message to an SNS topic
+  # AWS CLI command to publish a message to an SNS topic
 
-aws sns publish  --region "$AWS_REGION" --topic-arn "$TOPIC_ARN" --subject "$SERVICE on $HOST" --message "Magic jack down"
+  aws sns publish  --region "$AWS_REGION" --topic-arn "$TOPIC_ARN" --subject "$SERVICE on $HOST" --message "Magic jack down"
 
-```
+  ```
 
-In this script:
+  In this script:
 
-Replace "YOUR_SNS_TOPIC_ARN" with the actual ARN of your Amazon SNS topic. Replace "AWS ACCESS KEY ID" and "AWS_SECRET_ACCESS_KEY" with your access key and ID generated earlier.
+  Replace "YOUR_SNS_TOPIC_ARN" with the actual ARN of your Amazon SNS topic. Replace "AWS ACCESS KEY ID" and "AWS_SECRET_ACCESS_KEY" with your access key and ID generated earlier.
 
-- **Make the Script Executable**:
-  Make the script executable with the following command:
+  - **Make the Script Executable**:
+    Make the script executable with the following command:
 
-```
-chmod +x notify-service-by-sns.sh
-```
+  ```
+  chmod +x notify-service-by-sns.sh
+  ```
 
-- **Script Ownership**:
+  - **Script Ownership**:
 
-Check the ownership of the script. The owner of the script should be the user under which the Nagios process runs. By default, Nagios typically runs as the nagios user.
+  Check the ownership of the script. The owner of the script should be the user under which the Nagios process runs. By default, Nagios typically runs as the nagios user.
 
-```
-ls -l /path/to/notify-service-by-sns.sh
-```
+  ```
+  ls -l /path/to/notify-service-by-sns.sh
+  ```
 
-- **Nagios User and Group**:
+  - **Nagios User and Group**:
 
-Identify the user and group under which the Nagios process runs. You can typically find this information in the Nagios configuration files (e.g., /usr/local/nagios/etc/nagios.cfg).
+  Identify the user and group under which the Nagios process runs. You can typically find this information in the Nagios configuration files (e.g., /usr/local/nagios/etc/nagios.cfg).
 
-Change the user and group ownership of notify-service-by-sns.sh to the Nagios user and group, you can use the chown command in the following format:
+  Change the user and group ownership of notify-service-by-sns.sh to the Nagios user and group, you can use the chown command in the following format:
 
-```
-sudo chown nagios:nagios /path/to/ notify-service-by-sns.sh
-```
+  ```
+  sudo chown nagios:nagios /path/to/ notify-service-by-sns.sh
+  ```
 
-Replace `/path/to/file_or_directory` with the actual path to the file or directory you want to change the ownership of. This command will change both the owner and group to `nagios`.
+  Replace `/path/to/file_or_directory` with the actual path to the file or directory you want to change the ownership of. This command will change both the owner and group to `nagios`.
 
-**Test Execution**:
+  **Test Execution**:
 
-As a test, you can try to execute the script as the Nagios user (or the user under which Nagios runs) to see if there are any permission issues:
+  As a test, you can try to execute the script as the Nagios user (or the user under which Nagios runs) to see if there are any permission issues:
 
-```
-sudo -u nagios /path/to/notify-service-by-sns.sh "$SERVICEDESC$" "$HOSTNAME$" "$SERVICEOUTPUT$"
-```
+  ```
+  sudo -u nagios /path/to/notify-service-by-sns.sh "$SERVICEDESC$" "$HOSTNAME$" "$SERVICEOUTPUT$"
+  ```
 
-Successful test should provide the below output.You should also receive an email alert.
+  Successful test should provide the below output.You should also receive an email alert.
 
-```
-{
-   "MessageId": "xxxxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-}
-```
+  ```
+  {
+     "MessageId": "xxxxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+  }
+  ```
 
-### Configure Notification Commands:
+5. Configure Notification Commands:
 
-- Define how Nagios should send notifications. This involves specifying the command used for the notification method. In the case email.
+   - Define how Nagios should send notifications. This involves specifying the command used for the notification method. In the case email.
 
-- Modify your Nagios configuration to use this Bash script as the notification command. Here's how you can define the command in your `commands.cfg` file:
+   - Modify your Nagios configuration to use this Bash script as the notification command. Here's how you can define the command in your `commands.cfg` file:
 
-```
-define command {
-    command_name    notify-service-by-sns
-    command_line    /path/to/notify-service-by-sns.sh "$HOSTNAME$" "$SERVICEDESC$" "$SERVICESTATE$" "$SERVICEOUTPUT$"
-}
-```
+   ```
+   define command {
+      command_name    notify-service-by-sns
+      command_line    /path/to/notify-service-by-sns.sh "$HOSTNAME$" "$SERVICEDESC$" "$SERVICESTATE$" "$SERVICEOUTPUT$"
+   }
+   ```
 
-Make sure to replace /path/to/notify-service-by-sns.sh with the actual path to your Bash script.The `commands.cfg` file is located in `/usr/local/nagios/etc/objects/commands.cfg`
+   Make sure to replace /path/to/notify-service-by-sns.sh with the actual path to your Bash script.The `commands.cfg` file is located in `/usr/local/nagios/etc/objects/commands.cfg`
 
-### Verify Configuration:
+   ### Verify Configuration:
 
-Check the configuration for errors using Nagios' configuration verification tool:
+   Check the configuration for errors using Nagios' configuration verification tool:
 
-```
-sudo /usr/local/nagios/bin/nagios -v /usr/local/nagios/etc/nagios.cfg
-```
+   ```
+   sudo /usr/local/nagios/bin/nagios -v /usr/local/nagios/etc/nagios.cfg
+   ```
 
-Replace the paths with the actual paths used in your installation. This command will validate your configuration files and report any errors.
+   Replace the paths with the actual paths used in your installation. This command will validate your configuration files and report any errors.
 
-**Restart Nagios**: If there are no errors reported, restart Nagios to apply the new configuration:
+   **Restart Nagios**: If there are no errors reported, restart Nagios to apply the new configuration:
 
-```
-sudo systemctl restart nagios
-```
+   ```
+   sudo systemctl restart nagios
+   ```
 
-Now, Nagios will regularly perform ping checks on the specified host, and it will generate alerts based on the configured thresholds if the ping response times exceed the defined warning or critical values.
+   Now, Nagios will regularly perform ping checks on the specified host, and it will generate alerts based on the configured thresholds if the ping response times exceed the defined warning or critical values.
 
 ## Usage
 
