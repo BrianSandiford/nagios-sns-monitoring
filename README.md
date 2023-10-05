@@ -28,7 +28,7 @@ Before getting started, you'll need the following:
    cd nagios-sns-monitoring
    ```
 
-2. Configure Nagios host and service definitions in your Nagios configuration files (in this case pimylifeuphost.cfg located at /usr/local/nagios/etc/objects/pimylifeuphost.cfg ). **Configuation files included in this rep**
+2. Configure Nagios host and service definitions in your Nagios configuration files (in this case pimylifeuphost.cfg located at /usr/local/nagios/etc/objects/pimylifeuphost.cfg ). **Configuation files included in this repo**
 
 3. Configure AWS SNS.
 
